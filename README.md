@@ -18,3 +18,9 @@ w3schools.com/html/
 w3schools.com/css/
 
 w3schools.com/js/
+
+
+
+
+Install Node.js MongoDb on Ubuntu (EC2):
+https://gist.github.com/tejaswigowda/f289e9bff13d152876e8d4b3281142f8
