@@ -9,9 +9,8 @@
         var a = document.getElementById("valA").value;
         var b = document.getElementById("valB").value;
         var url = "./" + op + "?a=" + a + "&b=" + b;
-        console.log(url);
         loadURL(url, function(resData){
-           alert(resData);
+           document.getElementById("soln").innerHTML  = resData;
         });
       }
     </script>
