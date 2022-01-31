@@ -2,6 +2,7 @@
 <html>
   <head>
     <title> AJAX Example </title>
+    <script src='./asycReq.js'></script>
     <script>
       function doMath(){
         var op = document.getElementById("operator").value;
@@ -9,6 +10,9 @@
         var b = document.getElementById("valB").value;
         var url = "./" + op + "?a=" + a + "&b=" + b;
         console.log(url);
+        loadURL(url, function(resData){
+           alert(resData);
+        });
       }
     </script>
   </head>
