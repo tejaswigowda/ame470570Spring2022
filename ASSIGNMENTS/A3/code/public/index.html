@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <title> AJAX Example </title>
+    <script src='./asyncReq.js'></script>
+    <script>
+      function doMath(){
+        var op = document.getElementById("operator").value;
+        var a = document.getElementById("valA").value;
+        var b = document.getElementById("valB").value;
+        var url = "./" + op + "?a=" + a + "&b=" + b;
+        loadURL(url, function(resData){
+           document.getElementById("soln").innerHTML  = resData;
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <h1> Simple AJAX Math Operators </h1>
+    <input type='number' id='valA'>
+    <select id='operator'>
+      <option value='add'>+</option>
+      <option value='sub'>-</option>
+      <option value='mul'>X</option>
+      <option value='div'>/</option>
+      <option value='mod'>%</option>
+      <option value='exp'>**</option>
+    </select>
+    <input type='number' id='valB'>
+
+    <button onclick='doMath()'> Calculate </button>
+    <h2 id='soln'></h2>
+  </body>
+</html>
