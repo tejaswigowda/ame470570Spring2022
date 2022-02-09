@@ -3,6 +3,45 @@
   <head>
     <title> AJAX Example </title>
     <script src='./asyncReq.js'></script>
+    <style>
+      body{
+        margin:0;
+      }
+      #itemList{
+        position:absolute;
+        width: 30vw;
+        background: lightgray;
+        height: 100vh;
+        overflow-y: auto;
+      }
+      #itemList button
+      {
+          width: 100%;
+          height: 100px;
+          padding: 0;
+      }
+      #itemList button img{
+        float: left;
+      }
+      #itemList button h1{
+          text-overflow: ellipsis;
+          word-break: break-word;
+          overflow: hidden;
+          height: 30px;
+          white-space: nowrap;
+          text-align:left;
+          padding-left: 10px;
+      }
+      #itemList button h2{
+          text-overflow: ellipsis;
+          word-break: break-word;
+          overflow: hidden;
+          height: 30px;
+          white-space: nowrap;
+          text-align:left;
+          padding-left: 10px;
+      }
+    </style>
     <script>
       var jsonObj;
       function start(){
@@ -19,7 +58,14 @@
         var list = jsonObj.feed.results;
         var markup = "";
         for (var i = 0; i < list.length; i++){
-          markup += "<button>" + list[i].name + "</button>";
+          markup += "<button>" +
+           
+            "<img src='"+ list[i].artworkUrl100 +"'>" +
+            "<h1>" + list[i].name + "</h1>" + 
+            "<h2>" + list[i].artistName + "</h2>" + 
+            
+            
+            "</button>";
         }
 
         document.getElementById("itemList").innerHTML  = markup;
