@@ -4,29 +4,17 @@
     <title> AJAX Example </title>
     <script src='./asyncReq.js'></script>
     <script>
-      function doMath(){
-        var op = document.getElementById("operator").value;
-        var a = document.getElementById("valA").value;
-        var b = document.getElementById("valB").value;
-        var url = "./" + op + "?a=" + a + "&b=" + b;
+      function start(){
+        var hash = location.hash.replace("#","")
+        var url = "./makeHTTPReq?url=" + hash;
         loadURL(url, function(resData){
-           document.getElementById("soln").innerHTML  = resData;
+           document.getElementById("itemList").innerHTML  = resData;
         });
       }
     </script>
   </head>
-  <body>
-    <h1> Simple AJAX Math Operators </h1>
-    <input type='number' id='valA'>
-    <select id='operator'>
-      <option value='add'>+</option>
-      <option value='sub'>-</option>
-      <option value='mul'>X</option>
-      <option value='div'>/</option>
-    </select>
-    <input type='number' id='valB'>
-
-    <button onclick='doMath()'> Calculate </button>
-    <h2 id='soln'></h2>
-  </body>
+  <body onload='start()'>
+    <div id='itemList'> </div>
+    <div id='itemDetails'> </div>
+   </body>
 </html>
