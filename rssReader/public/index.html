@@ -9,9 +9,20 @@
         var hash = location.hash.replace("#","")
         var url = "./makeHTTPReq?url=" + hash;
         loadURL(url, function(resData){
-          jsonObj = JSON.parse(resData);
-           document.getElementById("itemList").innerHTML  = resData;
+           jsonObj = JSON.parse(resData);
+           generateMarkup();
         });
+      }
+
+      function generateMarkup()
+      {
+        var list = jsonObj.feed.results;
+        var markup = "";
+        for (var i = 0; i < list.length; i++){
+          markup += "<button>" + list[i].name + "</button>";
+        }
+
+        document.getElementById("itemList").innerHTML  = markup;
       }
     </script>
   </head>
