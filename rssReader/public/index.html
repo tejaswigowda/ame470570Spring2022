@@ -4,10 +4,12 @@
     <title> AJAX Example </title>
     <script src='./asyncReq.js'></script>
     <script>
+      var jsonObj;
       function start(){
         var hash = location.hash.replace("#","")
         var url = "./makeHTTPReq?url=" + hash;
         loadURL(url, function(resData){
+          jsonObj = JSON.parse(resData);
            document.getElementById("itemList").innerHTML  = resData;
         });
       }
