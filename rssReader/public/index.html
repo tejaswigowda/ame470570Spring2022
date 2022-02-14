@@ -1,11 +1,18 @@
 <!doctype html>
 <html>
   <head>
-    <title> AJAX Example </title>
+    <title> RSS Reader </title>
     <script src='./asyncReq.js'></script>
     <style>
       body{
         margin:0;
+      }
+      #feedList{
+        position:absolute;
+        width: 30vw;
+        background: lightblue;
+        height: 100vh;
+        overflow-y: auto;
       }
       #itemList{
         position:absolute;
@@ -13,6 +20,7 @@
         background: lightgray;
         height: 100vh;
         overflow-y: auto;
+        margin-left: 30vw;
       }
       #itemList button
       {
@@ -40,6 +48,13 @@
           white-space: nowrap;
           text-align:left;
           padding-left: 10px;
+      }
+      #itemDetails{
+        width: 40vw;
+        height: 100vh;
+        overflow: auto;
+        right: 0;
+        position: absolute;
       }
     </style>
     <script>
@@ -70,10 +85,24 @@
 
         document.getElementById("itemList").innerHTML  = markup;
       }
+
+      function addNew()
+      {
+        var feed = prompt("Enter Feed URL:");
+        var url = "./addFeed?url=" + feed;
+        loadURL(url, function(data){
+        
+        });
+      }
     </script>
   </head>
   <body onload='start()'>
-    <div id='itemList'> </div>
+    <div id='feedList'>
+      <button onclick='addNew()'>Add New Feed </button>
+      <div id='feeds'> </div>
+    </div>
+    <div id='itemList'> 
+    </div>
     <div id='itemDetails'> </div>
    </body>
 </html>

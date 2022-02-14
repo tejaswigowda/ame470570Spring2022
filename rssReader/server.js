@@ -7,8 +7,26 @@ var hostname = process.env.HOSTNAME || 'localhost';
 var port = 1234;
 var Client = require('node-rest-client').Client;
 var client = new Client();
+var MS = require("mongoskin");
+
+var db = MS.db("mongodb://127.0.0.1:27017/rssReader")
  
 
+server.get("/addFeed", function (req, res) {
+  var url = req.query.url;
+  var obj = {
+    time: new Date().getTime(),
+    url: url,
+    id: new Date().getTime(),
+  }
+
+  db.collection("data").insert(obj, function(e,r){
+    res.send("1");
+  });
+
+
+
+})
 server.get("/makeHTTPReq", function (req, res) {
   var url = req.query.url;
   client.get(url, function (data, response) {
