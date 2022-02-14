@@ -41,6 +41,14 @@
           text-align:left;
           padding-left: 10px;
       }
+      #itemDetails{
+        width: 70%;
+        position: absolute;
+        right: 0;
+        height: 100vh;
+        overflow: auto;
+        text-align:center;
+      }
     </style>
     <script>
       var jsonObj;
@@ -58,17 +66,22 @@
         var list = jsonObj.feed.results;
         var markup = "";
         for (var i = 0; i < list.length; i++){
-          markup += "<button>" +
-           
-            "<img src='"+ list[i].artworkUrl100 +"'>" +
-            "<h1>" + list[i].name + "</h1>" + 
-            "<h2>" + list[i].artistName + "</h2>" + 
-            
-            
+          markup += "<button onclick='itemClicked("+ i +")'>" +
+              "<img src='"+ list[i].artworkUrl100 +"'>" +
+              "<h1>" + list[i].name + "</h1>" + 
+              "<h2>" + list[i].artistName + "</h2>" + 
             "</button>";
         }
-
         document.getElementById("itemList").innerHTML  = markup;
+      }
+
+      function itemClicked(index){
+        var item = jsonObj.feed.results[index];
+          markup = 
+              "<img width=300 src='"+ item.artworkUrl100 +"'>" +
+              "<a target='_blank' href='"+ list.url + "'><h1>" + item.name + "</h1></a>" + 
+              "<a target='_blank' href='"+ item.artistUrl +"'><h2>" + item.artistName + "</h2></a>" 
+          document.getElementById("itemDetails").innerHTML  = markup;
       }
     </script>
   </head>
