@@ -79,7 +79,7 @@
         var item = jsonObj.feed.results[index];
           markup = 
               "<img width=300 src='"+ item.artworkUrl100 +"'>" +
-              "<a target='_blank' href='"+ list.url + "'><h1>" + item.name + "</h1></a>" + 
+              "<a target='_blank' href='"+ item.url + "'><h1>" + item.name + "</h1></a>" + 
               "<a target='_blank' href='"+ item.artistUrl +"'><h2>" + item.artistName + "</h2></a>" 
           document.getElementById("itemDetails").innerHTML  = markup;
       }
