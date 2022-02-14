@@ -3,6 +3,7 @@
   <head>
     <title> AJAX Example </title>
     <script src='./asyncReq.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <style>
       body{
         margin:0;
@@ -80,7 +81,8 @@
           markup = 
               "<img width=300 src='"+ item.artworkUrl100 +"'>" +
               "<a target='_blank' href='"+ item.url + "'><h1>" + item.name + "</h1></a>" + 
-              "<a target='_blank' href='"+ item.artistUrl +"'><h2>" + item.artistName + "</h2></a>" 
+              "<a target='_blank' href='"+ item.artistUrl +"'><h2>" + item.artistName + "</h2></a>" +
+              "<p><i>"+ moment(item.releaseDate).format('MMMM Do YYYY, h:mm:ss a'); + "</i></p>"
           document.getElementById("itemDetails").innerHTML  = markup;
       }
     </script>
