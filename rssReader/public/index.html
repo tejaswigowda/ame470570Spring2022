@@ -58,13 +58,12 @@
       }
     </style>
     <script>
-      var jsonObj;
+      var allFeeds;
       function start(){
-        var hash = location.hash.replace("#","")
-        var url = "./makeHTTPReq?url=" + hash;
+        var url = "./getAllFeeds";
         loadURL(url, function(resData){
-           jsonObj = JSON.parse(resData);
-           generateMarkup();
+           allFeeds = JSON.parse(resData);
+           generateFeedMarkup();
         });
       }
 
