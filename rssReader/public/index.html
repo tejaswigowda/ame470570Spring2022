@@ -65,6 +65,7 @@
     </style>
     <script>
       var allFeeds;
+      var jsonObj;
       function start(){
         var url = "./getAllFeeds";
         loadURL(url, function(resData){
@@ -86,6 +87,17 @@
         document.getElementById("feeds").innerHTML  = markup;
       }
 
+      function feedSelected(index)
+      {
+
+        var feedURL = allFeeds[index].url;
+        var url = "./makeHTTPReq?url="+ feedURL;
+        loadURL(url, function(data){
+          jsonObj = JSON.parse(data);
+          generateMarkup();
+        });
+
+      }
 
       function generateMarkup()
       {
