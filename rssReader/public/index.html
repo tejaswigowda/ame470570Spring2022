@@ -67,6 +67,20 @@
         });
       }
 
+      function generateFeedMarkup()
+      {
+        var list = allFeeds;
+        var markup = "";
+        for (var i = 0; i < list.length; i++){
+          markup += "<button>" +
+            "<h2>" + list[i].url+ "</h2>" + 
+            "</button>";
+        }
+
+        document.getElementById("feeds").innerHTML  = markup;
+      }
+
+
       function generateMarkup()
       {
         var list = jsonObj.feed.results;
