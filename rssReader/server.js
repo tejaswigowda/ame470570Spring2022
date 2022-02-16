@@ -23,10 +23,14 @@ server.get("/addFeed", function (req, res) {
   db.collection("data").insert(obj, function(e,r){
     res.send("1");
   });
+});
 
+server.get("/getAllFeeds", function (req, res) {
+  db.collection("data").find({}).toArray(function(e,r){
+    res.send(JSON.stringify(r))
+  });
+});
 
-
-})
 server.get("/makeHTTPReq", function (req, res) {
   var url = req.query.url;
   client.get(url, function (data, response) {
