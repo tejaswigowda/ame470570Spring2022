@@ -3,6 +3,7 @@
   <head>
     <title> RSS Reader </title>
     <script src='./asyncReq.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <style>
       body{
         margin:0;
@@ -104,17 +105,24 @@
         var list = jsonObj.feed.results;
         var markup = "";
         for (var i = 0; i < list.length; i++){
-          markup += "<button>" +
-           
+         markup += "<button onclick='itemClicked("+ i +")'>" +
             "<img src='"+ list[i].artworkUrl100 +"'>" +
             "<h1>" + list[i].name + "</h1>" + 
             "<h2>" + list[i].artistName + "</h2>" + 
-            
-            
             "</button>";
         }
 
         document.getElementById("itemList").innerHTML  = markup;
+      }
+
+       function itemClicked(index){
+        var item = jsonObj.feed.results[index];
+          markup =
+              "<img width=300 src='"+ item.artworkUrl100 +"'>" +
+              "<a target='_blank' href='"+ item.url + "'><h1>" + item.name + "</h1></a>" +
+              "<a target='_blank' href='"+ item.artistUrl +"'><h2>" + item.artistName + "</h2></a>" +
+              "<p><i>"+ moment(item.releaseDate).format('MMMM Do YYYY'); + "</i></p>"
+          document.getElementById("itemDetails").innerHTML  = markup;
       }
 
       function addNew()
