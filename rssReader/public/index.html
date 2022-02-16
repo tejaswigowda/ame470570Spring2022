@@ -99,15 +99,15 @@
         var url = "./makeHTTPReq?url="+ feedURL;
         loadURL(url, function(data){
           jsonObj = JSON.parse(data);
-          generateMarkup();
+          generateMarkup(index);
         });
 
       }
 
-      function generateMarkup()
+      function generateMarkup(index)
       {
         var list = jsonObj.feed.results;
-        var markup = "";
+        var markup = "<button onclick=deleteFeed("+index+")">;
         for (var i = 0; i < list.length; i++){
          markup += "<button onclick='itemClicked("+ i +")'>" +
             "<img src='"+ list[i].artworkUrl100 +"'>" +
