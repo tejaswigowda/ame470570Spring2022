@@ -55,7 +55,8 @@
       #itemList button img{
         float: left;
       }
-      #itemList button h1
+      #itemList button h1,
+      #feeds button h1
       {
           text-overflow: ellipsis;
           word-break: break-word;
@@ -64,7 +65,9 @@
           white-space: nowrap;
           text-align:left;
           font-size: 24px;
+          padding: 0;
           padding-left: 10px;
+          margin: 0;
       }
       #itemList button h2,
       #feeds button h2{
@@ -75,7 +78,9 @@
           font-size: 20px;
           white-space: nowrap;
           text-align:left;
+          padding: 0;
           padding-left: 10px;
+          margin: 0;
       }
       #itemDetails{
         width: 40vw;
@@ -163,7 +168,8 @@
   </head>
   <body onload='start()'>
     <div id='feedList'>
-      <button onclick='addNew()'>Add New Feed </button>
+      <a class="waves-effect waves-light btn blue" style='width: 100%' href='jsvascript:addNew()'><i class="material-icons left">add</i>Add New Feed</a>
+
       <div id='feeds'> </div>
     </div>
     <div id='itemList'> 
