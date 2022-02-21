@@ -154,6 +154,9 @@
       }
 
        function itemClicked(index){
+        $("#itemList button").removeClass("selected");
+        $("#itemList button:nth-of-type("+(index+1)+")").addClass("selected");
+
         var item = jsonObj.feed.results[index];
           markup =
               "<img width=300 src='"+ item.artworkUrl100 +"'>" +
