@@ -19,7 +19,12 @@
       #itemDetails{
         text-align:center;
       }
-
+      #itemDetails a h1{
+        font-size: 24px;
+      }
+      #itemDetails a h2{
+        font-size: 20px;
+      }
       #feedList{
         position:absolute;
         width: 30vw;
@@ -120,7 +125,7 @@
       {
         var list = jsonObj.feed.results;
         var markup = '<a class="waves-effect waves-light btn blue" href="javascript:editFeed('+index+')"><i class="material-icons left">create</i>Edit Feed</a>'
-          + '<a class="waves-effect waves-light btn red" href="javascript:deleteFeed('+index+')"><i class="material-icons left">delete</i>Delete Feed</a>'
+          + '<a class="waves-effect waves-light btn red" style="float:right" href="javascript:deleteFeed('+index+')"><i class="material-icons left">delete</i>Delete Feed</a>'
  //       var markup = "<button onclick=editFeed("+index+")><h2>Edit This Feed<h2></button>"
  //           + "<button onclick=deleteFeed("+index+")><h2>Delete This Feed<h2></button>";
         for (var i = 0; i < list.length; i++){

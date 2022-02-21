@@ -18,6 +18,7 @@ server.get("/addFeed", function (req, res) {
     time: new Date().getTime(),
     url: url,
     id: new Date().getTime(),
+    name: "Untitled"
   }
 
   db.collection("data").insert(obj, function(e,r){
