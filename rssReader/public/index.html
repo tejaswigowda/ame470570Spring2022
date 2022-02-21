@@ -4,6 +4,7 @@
     <title> RSS Reader </title>
     <script src='./asyncReq.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <!-- Compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
@@ -88,6 +89,11 @@
         overflow: auto;
         right: 0;
         position: absolute;
+        padding-top: 50px;
+      }
+
+      .selected{
+        background-color: #2ab7a9;
       }
     </style>
     <script>
@@ -117,6 +123,8 @@
 
       function feedSelected(index)
       {
+        $("#feeds button").removeClass("selected");
+        $("#feeds button:nth-of-type("+(n+1)+")").addClass("selected");
 
         var feedURL = allFeeds[index].url;
         var url = "./makeHTTPReq?url="+ feedURL;
