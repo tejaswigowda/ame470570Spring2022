@@ -124,7 +124,7 @@
       function feedSelected(index)
       {
         $("#feeds button").removeClass("selected");
-        $("#feeds button:nth-of-type("+(n+1)+")").addClass("selected");
+        $("#feeds button:nth-of-type("+(index+1)+")").addClass("selected");
 
         var feedURL = allFeeds[index].url;
         var url = "./makeHTTPReq?url="+ feedURL;
