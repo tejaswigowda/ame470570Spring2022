@@ -107,7 +107,7 @@
       function generateMarkup(index)
       {
         var list = jsonObj.feed.results;
-        var markup = "<button onclick=deleteFeed("+index+")>";
+        var markup = "<button onclick=deleteFeed("+index+")><h2>Delete This Feed<h2></button>";
         for (var i = 0; i < list.length; i++){
          markup += "<button onclick='itemClicked("+ i +")'>" +
             "<img src='"+ list[i].artworkUrl100 +"'>" +
@@ -132,9 +132,10 @@
       function addNew()
       {
         var feed = prompt("Enter Feed URL:");
+        if(feed === null) return;
         var url = "./addFeed?url=" + feed;
         loadURL(url, function(data){
-        
+            start();
         });
       }
     </script>
