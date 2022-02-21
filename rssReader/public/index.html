@@ -120,9 +120,9 @@
       {
         var list = jsonObj.feed.results;
         var markup = '<a class="waves-effect waves-light btn blue" href="javascript:editFeed('+index+')"><i class="material-icons left">create</i>Edit Feed</a>'
-
+          + '<a class="waves-effect waves-light btn red" href="javascript:deleteFeed('+index+')"><i class="material-icons left">delete</i>Delete Feed</a>'
  //       var markup = "<button onclick=editFeed("+index+")><h2>Edit This Feed<h2></button>"
-            + "<button onclick=deleteFeed("+index+")><h2>Delete This Feed<h2></button>";
+ //           + "<button onclick=deleteFeed("+index+")><h2>Delete This Feed<h2></button>";
         for (var i = 0; i < list.length; i++){
          markup += "<button onclick='itemClicked("+ i +")'>" +
             "<img src='"+ list[i].artworkUrl100 +"'>" +
