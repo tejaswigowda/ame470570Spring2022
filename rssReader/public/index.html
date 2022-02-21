@@ -119,7 +119,9 @@
       function generateMarkup(index)
       {
         var list = jsonObj.feed.results;
-        var markup = "<button onclick=editFeed("+index+")><h2>Edit This Feed<h2></button>"
+        var markup = '<a class="waves-effect waves-light btn" href="javascript:editFeed('+index+')"><i class="material-icons left">cloud</i>Edit Feed</a>'
+
+ //       var markup = "<button onclick=editFeed("+index+")><h2>Edit This Feed<h2></button>"
             + "<button onclick=deleteFeed("+index+")><h2>Delete This Feed<h2></button>";
         for (var i = 0; i < list.length; i++){
          markup += "<button onclick='itemClicked("+ i +")'>" +
