@@ -107,7 +107,8 @@
       function generateMarkup(index)
       {
         var list = jsonObj.feed.results;
-        var markup = "<button onclick=deleteFeed("+index+")><h2>Delete This Feed<h2></button>";
+        var markup = "<button onclick=editFeed("+index+")><h2>Edit This Feed<h2></button>"
+            + "<button onclick=deleteFeed("+index+")><h2>Delete This Feed<h2></button>";
         for (var i = 0; i < list.length; i++){
          markup += "<button onclick='itemClicked("+ i +")'>" +
             "<img src='"+ list[i].artworkUrl100 +"'>" +
