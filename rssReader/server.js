@@ -17,7 +17,7 @@ server.get("/addFeed", function (req, res) {
   var obj = {
     time: new Date().getTime(),
     url: url,
-    id: new Date().getTime(),
+    id: new Date().getTime().toString(),
     name: "Untitled"
   }
 
