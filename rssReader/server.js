@@ -34,6 +34,7 @@ server.get("/editFeed", function (req, res) {
     r.name = newName;
     db.collection("data").save(r, function(e1,r1){
       res.send("1");
+    });
   });
 });
 
