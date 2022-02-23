@@ -99,11 +99,14 @@
     <script>
       var allFeeds;
       var jsonObj;
-      function start(){
+      function start(callback){
         var url = "./getAllFeeds";
         loadURL(url, function(resData){
            allFeeds = JSON.parse(resData);
            generateFeedMarkup();
+           if(callback){
+             callback();
+           }
         });
       }
 
@@ -182,11 +185,15 @@
         var newName = prompt("Edit Feed Name:", title);
         var url = "./editFeed?id=" + id + "&newName=" + newName;
         loadURL(url, function(data){
+          start(
+            function(){ $("#feeds button:nth-of-type("+(index+1)+")").addClass("selected");
+          });
         });
       }
     </script>
   </head>
   <body onload='start()'>
+
     <div id='feedList'>
       <a class="waves-effect waves-light btn blue" style='width: 100%' href='javascript:addNew()'><i class="material-icons left">add</i>Add New Feed</a>
 
