@@ -175,6 +175,15 @@
             start();
         });
       }
+      
+      function editFeed(index){
+        var title = allFeeds[index].name;
+        var id = allFeeds[index].id;
+        var newName = prompt("Edit Feed Name:", title);
+        var url = "./editFeed?id=" + id + "&newName=" + newName;
+        loadURL(url, function(data){
+        });
+      }
     </script>
   </head>
   <body onload='start()'>
