@@ -2,6 +2,8 @@
 <html>
   <head>
     <title> RSS Reader </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <script src='./asyncReq.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -14,6 +16,9 @@
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
+      #backButton{
+        display: none;
+      }
       body{
         margin:0;
       }
@@ -95,6 +100,48 @@
       .selected{
         background-color: #2ab7a9;
       }
+
+      @media (max-width: 500px){
+        body.col2 #backButton,
+        body.col3 #backButton
+        {
+          display: block;
+        }
+        body.col2 #feedList{
+          display: none;
+        }
+        body.col2 #itemList{
+          display: block;
+        }
+        body.col2 #itemDetails{
+          display: none;
+        }
+
+        body.col3 #feedList{
+          display: none;
+        }
+        body.col3 #itemList{
+          display: none;
+        }
+        body.col3 #itemDetails{
+          display: block;
+        }
+
+        #feedList{
+          width: 100vw;
+          margin-left: 0;
+        }
+        #itemList{
+          width: 100vw;
+          margin-left: 0;
+          display: none;
+        }
+        #itemDetails{
+          width: 100vw;
+          margin-left: 0;
+          display: none;
+        }
+      }
     </style>
     <script>
       var allFeeds;
@@ -126,6 +173,7 @@
 
       function feedSelected(index)
       {
+        $("body").removeClass().addClass("col2")
         $("#feeds button").removeClass("selected");
         $("#feeds button:nth-of-type("+(index+1)+")").addClass("selected");
 
@@ -157,6 +205,7 @@
       }
 
        function itemClicked(index){
+        $("body").removeClass().addClass("col3")
         $("#itemList button").removeClass("selected");
         $("#itemList button:nth-of-type("+(index+1)+")").addClass("selected");
 
@@ -202,5 +251,6 @@
     <div id='itemList'> 
     </div>
     <div id='itemDetails'> </div>
+      <a id='backButton' class="waves-effect waves-light btn blue" style='position:fixed;bottom:0;left:0' href='javascript:addNew()'><i class="material-icons left">arrow-left</i>Back</a>
    </body>
 </html>
