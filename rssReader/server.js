@@ -31,7 +31,9 @@ server.get("/editFeed", function (req, res) {
   var newName = req.query.newName;
   db.collection("data").findOne({id:id}, function(e,r){
     console.log(r);
-    res.send("1");
+    r.name = newName;
+    db.collection("data").save(r, function(e1,r1){
+      res.send("1");
   });
 });
 
