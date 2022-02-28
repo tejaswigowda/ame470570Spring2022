@@ -144,6 +144,22 @@
       }
     </style>
     <script>
+	function goBack(){
+	   if($('body').hasClass('col3')){
+		$("body").removeClass().addClass("col2")
+		$("#itemList button").removeClass("selected");
+		document.getElementById("itemDetails").innerHTML = "";
+	   }
+	   else if($('body').hasClass('col2')){
+		$("body").removeClass()
+		$("#feeds button").removeClass("selected");
+		document.getElementById("itemList").innerHTML = "";
+	   }
+   	   else{
+		$("body").removeClass()
+	   }
+
+	}
       var allFeeds;
       var jsonObj;
       function start(callback){
@@ -251,6 +267,6 @@
     <div id='itemList'> 
     </div>
     <div id='itemDetails'> </div>
-      <a id='backButton' class="waves-effect waves-light btn blue" style='position:fixed;bottom:0;left:0' href='javascript:addNew()'><i class="material-icons left">arrow-left</i>Back</a>
+      <a id='backButton' class="waves-effect waves-light btn blue" style='position:fixed;bottom:0;left:0;width:100px;' href='javascript:goBack()'><i style='margin-right:0' class="material-icons left">arrow_left</i>Back</a>
    </body>
 </html>

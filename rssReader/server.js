@@ -9,7 +9,7 @@ var Client = require('node-rest-client').Client;
 var client = new Client();
 var MS = require("mongoskin");
 
-var db = MS.db("mongodb://127.0.0.1:27017/rssReader")
+var db = MS.db("mongodb://18.237.222.78:27017/rssReader")
  
 
 server.get("/addFeed", function (req, res) {
