@@ -2,7 +2,7 @@ var url = require("url"),
 	querystring = require("querystring");
 var passport = require('passport');
 var fs = require('fs');
-	var dbURL = 'mongodb://34.219.163.158:27017/test';
+	var dbURL = 'mongodb://127.0.0.1:27017/test';
 var path = require('path'),
   express = require('express'),
   db = require('mongoskin').db(dbURL);
@@ -48,6 +48,8 @@ app.get("/getProjects", function(req,res){
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.listen(8080);
+
+console.log("server running at http://localhost:8080")
 
 // route middleware to ensure user is logged in
 function isLoggedIn(req, res, next) {
