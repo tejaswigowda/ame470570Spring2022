@@ -6,7 +6,8 @@ var fs = require('fs');
 var path = require('path'),
   express = require('express'),
   db = require('mongoskin').db(dbURL);
-
+  var Client = require('node-rest-client').Client;
+var client = new Client();
 
 var mongoose = require('mongoose');
 mongoose.connect(dbURL); // connect to our database

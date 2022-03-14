@@ -255,9 +255,30 @@
           });
         });
       }
+
+      var main = function(){
+  // check whether user is logged in
+  loadURL("/loginStatus", function(data){
+    if(data === "0"){
+      window.location.href='./login.html'
+      return;
+    }
+    else{
+      start();
+    }
+  });               
+}
+
+var doLogout = function()
+{
+  var x = confirm("Logout now?")
+  if(x){
+    loadFile("./logout", function(d){window.location.reload()})
+  }
+}
     </script>
   </head>
-  <body onload='start()'>
+  <body onload='main()'>
 
     <div id='feedList'>
       <a class="waves-effect waves-light btn blue" style='width: 100%' href='javascript:addNew()'><i class="material-icons left">add</i>Add New Feed</a>
