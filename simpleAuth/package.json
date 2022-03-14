@@ -1,0 +1,42 @@
+{
+  "name": "@tejaswigowda/simpleauth",
+  "version": "1.0.0",
+  "description": "Simple authentication using Node.js + Passport.js",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tejaswigowda/simpleAuth.git"
+  },
+  "keywords": [
+    "authentication",
+    "Node.js",
+    "Passport.js",
+    "mongoDB"
+  ],
+  "author": "tejaswigowda <tejaswi@foxyninjastudios.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tejaswigowda/simpleAuth/issues"
+  },
+  "homepage": "https://github.com/tejaswigowda/simpleAuth#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "^0.0.3",
+    "body-parser": "^1.19.0",
+    "connect-mongo": "^3.2.0",
+    "cookie-parser": "^1.4.5",
+    "errorhandler": "^1.5.1",
+    "express": "^4.17.1",
+    "express-flash": "^0.0.2",
+    "express-session": "^1.17.1",
+    "method-override": "^3.0.0",
+    "mongodb": "^2.2.36",
+    "mongoose": "^5.11.16",
+    "mongoskin": "^2.1.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
+  }
+}
