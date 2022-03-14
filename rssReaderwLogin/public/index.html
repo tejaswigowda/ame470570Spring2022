@@ -273,7 +273,7 @@ var doLogout = function()
 {
   var x = confirm("Logout now?")
   if(x){
-    loadFile("./logout", function(d){window.location.reload()})
+    loadURL("./logout", function(d){window.location.reload()})
   }
 }
     </script>
@@ -284,6 +284,7 @@ var doLogout = function()
       <a class="waves-effect waves-light btn blue" style='width: 100%' href='javascript:addNew()'><i class="material-icons left">add</i>Add New Feed</a>
 
       <div id='feeds'> </div>
+      <a id='logoutButton' class="waves-effect waves-light btn red" style='position:fixed;bottom:0;left:0;width:100px;' href='javascript:doLogout()'>Logout</a>
     </div>
     <div id='itemList'> 
     </div>

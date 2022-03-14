@@ -1,3 +1,4 @@
+const md5 = require("md5");
 var url = require("url"),
 	querystring = require("querystring");
 var passport = require('passport');
@@ -43,7 +44,8 @@ app.get("/addFeed", function (req, res) {
   var obj = {
     time: new Date().getTime(),
     url: url,
-    id: new Date().getTime().toString(),
+    userid: req.user.local.email,
+    id: md5(req.user.local.email +  new Date().getTime().toString()),
     name: "Untitled"
   }
 
@@ -65,7 +67,7 @@ app.get("/editFeed", function (req, res) {
 });
 
 app.get("/getAllFeeds", function (req, res) {
-  db.collection("data").find({}).toArray(function(e,r){
+  db.collection("data").find({userid:req.user.local.email}).toArray(function(e,r){
     res.send(JSON.stringify(r))
   });
 });
