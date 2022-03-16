@@ -54,6 +54,14 @@ app.get("/addFeed", function (req, res) {
   });
 });
 
+app.get("/deleteFeed", function (req, res) {
+  var id = req.query.id;
+  db.collection("data").remove({id:id}, function(e,r){
+      res.send("1");
+  });
+});
+
+
 app.get("/editFeed", function (req, res) {
   var id = req.query.id;
   var newName = req.query.newName;

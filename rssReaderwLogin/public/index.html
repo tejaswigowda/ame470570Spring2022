@@ -244,6 +244,17 @@
         });
       }
       
+      function deleteFeed(index){
+        var id = allFeeds[index].id;
+        var x = confirm("Are you sure?");
+        if(!x) return;
+        var url = "./deleteFeed?id=" + id;
+        loadURL(url, function(data){
+          start();
+          document.getElementById("itemList").innerHTML = "";
+        });
+      }
+      
       function editFeed(index){
         var title = allFeeds[index].name;
         var id = allFeeds[index].id;
