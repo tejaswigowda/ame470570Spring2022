@@ -29,23 +29,6 @@ app.get("/", function (req, res) {
       res.redirect("/index.html");
 });
 
-app.post('/uploadImage', function(req, res){
-    var intname = req.body.fileInput;
-    var s3Path = '/' + intname;
-    var buf = new Buffer(req.body.data.replace(/^data:image\/\w+;base64,/, ""),'base64');
-    var params = {
-        Bucket:'bucket470570',
-        ACL:'public-read',
-        Key:intname,
-        Body: buf,
-        ServerSideEncryption : 'AES256'
-    };
-    s3.putObject(params, function(err, data) {
-        console.log(err);
-        res.end("success");
-    });
-});
-
 app.post('/uploadFile', function(req, res){
     var intname = req.body.fileInput;
     var filename = req.files.input.name;
