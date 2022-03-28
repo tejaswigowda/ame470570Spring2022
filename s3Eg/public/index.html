@@ -12,7 +12,7 @@ var fileUploaded = function()
    console.log(ext);
 
    var fd = new FormData();
-   var fileInput = "s3Upload_" + new Date().getTime().toString() + "." + ext;
+   var fileInput = "tlingego-s3Upload_" + new Date().getTime().toString() + "." + ext;
    fd.append('fileInput', fileInput);
    fd.append('input', file.files[0]);
    fd.append('date', (new Date()).toString());
