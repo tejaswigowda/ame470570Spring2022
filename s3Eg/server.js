@@ -49,7 +49,7 @@ app.post('/uploadFile', function(req, res){
             console.log(err);
         });
     });
-  });
+});
 
 
 console.log("Simple static server listening at http://" + hostname + ":" + port);
