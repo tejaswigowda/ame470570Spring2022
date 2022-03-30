@@ -14,7 +14,38 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script>
+var fileUploaded = function()
+{
+   var file = $('#theFileUploader').get(0);
+   var fileObj = $('#theFileUploader').get(0).files[0]
+   if(fileObj.size > 5 *1000 * 1000){
+    alert("Please upload a smaller file!");
+    return;
+   }
+   var filename = fileObj.name;
+   var ext = filename.split(".");
+   ext = ext[ext.length-1];
+   console.log(ext);
 
+   var fd = new FormData();
+   var fileInput = "asurite-s3Upload_" + new Date().getTime().toString() + "." + ext;
+   fd.append('fileInput', fileInput);
+   fd.append('input', file.files[0]);
+   fd.append('date', (new Date()).toString());
+
+    //fd.append('data', data);
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(e) {  
+      if (xhr.readyState != 4) { return; }
+        // callback logic
+       document.getElementById("preview").src = "https://bucket470570.s3-us-west-2.amazonaws.com/" + fileInput;
+    };
+    xhr.open("POST", "/uploadFile", true);
+    xhr.send(fd);
+}
+
+</script>
     <style>
       #backButton{
         display: none;
@@ -324,7 +355,7 @@ var doLogout = function()
         <div class='submenu'>
           <h1> Image Library</h1>
               <a class="waves-effect waves-light btn blue" style='position:fixed;bottom:0;'>Upload
-                  <input type='file' id='theFileUploader' onchange='fileUploaded()'
+                  <input type='file' id='theFileUploader' onchange='fileUploaded()' accept="image/png, image/jpeg"
                   style='
                       position: absolute;
                       left: 0;

@@ -1,3 +1,8 @@
+var fs = require('fs');
+var AWS = require('aws-sdk');
+AWS.config.loadFromPath('./credentials.json');
+var s3 = new AWS.S3();
+
 const md5 = require("md5");
 var url = require("url"),
 	querystring = require("querystring");
@@ -88,7 +93,27 @@ app.get("/makeHTTPReq", function (req, res) {
     res.send(data);
   });
 });
-
+app.post('/uploadFile', function(req, res){
+    var intname = req.body.fileInput;
+    var filename = req.files.input.name;
+    var fileType =  req.files.input.type;
+    var tmpPath = req.files.input.path;
+    var s3Path = '/' + intname;
+    
+    fs.readFile(tmpPath, function (err, data) {
+        var params = {
+            Bucket:'bucket470570',
+            ACL:'public-read',
+            Key:intname,
+            Body: data,
+            ServerSideEncryption : 'AES256'
+        };
+        s3.putObject(params, function(err, data) {
+            res.end("success");
+            console.log(err);
+        });
+    });
+}
 
 app.use(express.static(path.join(__dirname, 'public')));
 //app.listen(8080);
