@@ -55,6 +55,15 @@ var fileUploaded = function()
     xhr.send(fd);
 }
 
+function updateFriends()
+{
+  var list = document.getElementById("friendList").value;
+  var url = "./updateFriends?list="+ list;
+  console.log(url);
+  loadURL(url, function(data){
+  });
+}
+
 </script>
     <style>
       #backButton{
@@ -93,7 +102,7 @@ var fileUploaded = function()
           height: 100px;
           padding: 0;
       }
-      #itemList button
+      #itemList > button
       {
           width: 100%;
           height: 100px;
@@ -207,6 +216,11 @@ var fileUploaded = function()
         $("#itemList .submenu").fadeOut(0);
         const element = document.querySelector('.js-choice');
         const choices = new Choices(element,{ removeItems: true,removeItemButton: true});
+        loadURL("./getAccountInfo", function(data){
+          var aInfo = JSON.parse(data);
+          console.log(aInfo);
+        });
+
       }
 
       function generateImageList()
@@ -385,7 +399,7 @@ var doLogout = function()
 
         <div class='submenu'>
           <h1> Friends</h1>
-          <input type='text 'class='js-choice' id='fList'>
+          <input type='text 'class='js-choice' id='friendList' onchange='updateFriends()'>
         </div>
 
         <div class='submenu'>

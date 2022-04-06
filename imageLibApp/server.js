@@ -30,7 +30,7 @@ const md5 = require("md5");
 var url = require("url"),
 	querystring = require("querystring");
 var passport = require('passport');
-	var dbURL = 'mongodb://127.0.0.1:27017/rssReader';
+	var dbURL = 'mongodb://127.0.0.1:27017/imageApp';
 var path = require('path'),
   db = require('mongoskin').db(dbURL);
   var Client = require('node-rest-client').Client;
@@ -133,6 +133,26 @@ app.post('/uploadFile', function(req, res){
 app.get("/getAllImages", function (req, res) {
   db.collection("images").find({userid:req.user.local.email}).toArray(function(e,r){
     res.send(JSON.stringify(r))
+  });
+});
+
+app.get("/updateFriends", function (req, res) {
+  db.collection("account").findOne({userid:req.user.local.email}, function(e,r){
+    if(r){
+      r.friends = req.query.list.split(",")
+      db.collection("account").save(r, function(e1,r1){
+        res.send("1");
+      });
+    }
+    else{
+      var obj = {
+         userid: req.user.local.email,
+         friends: req.query.list.split(",")
+      }
+      db.collection("account").insert(obj, function(e1,r1){
+        res.send("1");
+      });
+    }
   });
 });
 
