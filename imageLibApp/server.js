@@ -3,14 +3,35 @@ var AWS = require('aws-sdk');
 AWS.config.loadFromPath('./credentials.json');
 var s3 = new AWS.S3();
 
+var express = require("express");
+var app = express();
+var bodyParser = require('body-parser');
+
+var errorHandler = require('errorhandler');
+var methodOverride = require('method-override');
+var hostname = process.env.HOSTNAME || 'localhost';
+var port = 8080;
+app.use(methodOverride());
+app.use(bodyParser());
+//app.use(require('connect').bodyParser());
+
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+
+// parse application/json
+app.use(bodyParser.json())
+
+app.use(express.static(__dirname + '/public'));
+app.use(errorHandler());
+
+
 const md5 = require("md5");
 var url = require("url"),
 	querystring = require("querystring");
 var passport = require('passport');
-var fs = require('fs');
 	var dbURL = 'mongodb://127.0.0.1:27017/rssReader';
 var path = require('path'),
-  express = require('express'),
   db = require('mongoskin').db(dbURL);
   var Client = require('node-rest-client').Client;
 var client = new Client();
@@ -18,7 +39,6 @@ var client = new Client();
 var mongoose = require('mongoose');
 mongoose.connect(dbURL); // connect to our database
 
-var app = express();
 var secret = 'test' + new Date().getTime().toString()
 
 var session = require('express-session');
@@ -33,14 +53,6 @@ app.use(passport.session());
 var flash = require('express-flash');
 app.use( flash() );
 
-var bodyParser = require("body-parser");
-var methodOverride = require("method-override");
-
-app.use(methodOverride());
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended:false
-}));
 require('./passport/config/passport')(passport); // pass passport for configuration
 require('./passport/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
@@ -97,6 +109,7 @@ app.get("/makeHTTPReq", function (req, res) {
 
 app.post('/uploadFile', function(req, res){
     var intname = req.body.fileInput;
+    console.log(intname);
     var filename = req.files.input.name;
     var fileType =  req.files.input.type;
     var tmpPath = req.files.input.path;
@@ -116,6 +129,13 @@ app.post('/uploadFile', function(req, res){
         });
     });
 });
+
+app.get("/getAllImages", function (req, res) {
+  db.collection("images").find({userid:req.user.local.email}).toArray(function(e,r){
+    res.send(JSON.stringify(r))
+  });
+});
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 //app.listen(8080);
