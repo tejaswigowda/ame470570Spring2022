@@ -222,8 +222,8 @@ function updateFriends()
         loadURL("./getAccountInfo", function(data){
           var aInfo = JSON.parse(data);
           choices.setValue(aInfo.friends);
-          document.getElementById("firstName").value = aInfo.fname || "";
-          document.getElementById("lastName").value = aInfo.lname || "";
+          document.getElementById("fname").value = aInfo.fname || "";
+          document.getElementById("lname").value = aInfo.lname || "";
         });
 
       }
