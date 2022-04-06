@@ -136,10 +136,21 @@ app.get("/getAllImages", function (req, res) {
   });
 });
 
+app.get("/getAccountInfo", function (req, res) {
+  db.collection("account").findOne({userid:req.user.local.email}, function(e,r){
+    res.end(JSON.stringify(r));
+  });
+});
+
+
+
+
 app.get("/updateFriends", function (req, res) {
   db.collection("account").findOne({userid:req.user.local.email}, function(e,r){
     if(r){
       r.friends = req.query.list.split(",")
+      r.fname = req.query.fname
+      r.lname = req.query.lname
       db.collection("account").save(r, function(e1,r1){
         res.send("1");
       });
@@ -147,6 +158,8 @@ app.get("/updateFriends", function (req, res) {
     else{
       var obj = {
          userid: req.user.local.email,
+         fname : req.query.fname,
+         lname : req.query.lname,
          friends: req.query.list.split(",")
       }
       db.collection("account").insert(obj, function(e1,r1){

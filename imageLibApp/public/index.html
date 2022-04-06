@@ -58,7 +58,9 @@ var fileUploaded = function()
 function updateFriends()
 {
   var list = document.getElementById("friendList").value;
-  var url = "./updateFriends?list="+ list;
+  var url = "./updateFriends?list="+ list
+     + "&fname=" + document.getElementById("fname").value
+     + "&lname=" + document.getElementById("lname").value
   console.log(url);
   loadURL(url, function(data){
   });
@@ -212,13 +214,16 @@ function updateFriends()
 	}
       var allImages;
       var jsonObj;
+      var choices;
       function start(callback){
         $("#itemList .submenu").fadeOut(0);
         const element = document.querySelector('.js-choice');
-        const choices = new Choices(element,{ removeItems: true,removeItemButton: true});
+        choices = new Choices(element,{ removeItems: true,removeItemButton: true});
         loadURL("./getAccountInfo", function(data){
           var aInfo = JSON.parse(data);
-          console.log(aInfo);
+          choices.setValue(aInfo.friends);
+          document.getElementById("firstName").value = aInfo.fname || "";
+          document.getElementById("lastName").value = aInfo.lname || "";
         });
 
       }
@@ -404,6 +409,8 @@ var doLogout = function()
 
         <div class='submenu'>
           <h1> Account </h1>
+          <input type='text' id='fname' onchange='updateFriends()'>
+          <input type='text' id='lname' onchange='updateFriends()'>
         </div>
 
     </div>
