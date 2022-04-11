@@ -8,7 +8,4 @@ function Paginator(name, paginator) {
   property(this, 'resultKey', paginator.result_key);
 }
 
-/**
- * @api private
- */
 module.exports = Paginator;

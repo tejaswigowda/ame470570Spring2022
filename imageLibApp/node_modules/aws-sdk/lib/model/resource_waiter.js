@@ -27,7 +27,4 @@ function ResourceWaiter(name, waiter, options) {
   });
 }
 
-/**
- * @api private
- */
 module.exports = ResourceWaiter;

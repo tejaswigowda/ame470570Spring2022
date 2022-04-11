@@ -9,8 +9,6 @@ var AWS = require('./core');
  *
  *   @param eventName [String] the event name to register the listener for
  *   @param callback [Function] the listener callback function
- *   @param toHead [Boolean] attach the listener callback to the head of callback array if set to true.
- *     Default to be false.
  *   @return [AWS.SequentialExecutor] the same object for chaining
  */
 AWS.SequentialExecutor = AWS.util.inherit({
@@ -26,20 +24,21 @@ AWS.SequentialExecutor = AWS.util.inherit({
     return this._events[eventName] ? this._events[eventName].slice(0) : [];
   },
 
-  on: function on(eventName, listener, toHead) {
+  on: function on(eventName, listener) {
     if (this._events[eventName]) {
-      toHead ?
-        this._events[eventName].unshift(listener) :
-        this._events[eventName].push(listener);
+      this._events[eventName].push(listener);
     } else {
       this._events[eventName] = [listener];
     }
     return this;
   },
 
-  onAsync: function onAsync(eventName, listener, toHead) {
+  /**
+   * @api private
+   */
+  onAsync: function onAsync(eventName, listener) {
     listener._isAsync = true;
-    return this.on(eventName, listener, toHead);
+    return this.on(eventName, listener);
   },
 
   removeListener: function removeListener(eventName, listener) {
@@ -172,18 +171,18 @@ AWS.SequentialExecutor = AWS.util.inherit({
    *   // the following prints: true
    *   console.log(emitter.DATA_CALLBACK == listener);
    */
-  addNamedListener: function addNamedListener(name, eventName, callback, toHead) {
+  addNamedListener: function addNamedListener(name, eventName, callback) {
     this[name] = callback;
-    this.addListener(eventName, callback, toHead);
+    this.addListener(eventName, callback);
     return this;
   },
 
   /**
    * @api private
    */
-  addNamedAsyncListener: function addNamedAsyncListener(name, eventName, callback, toHead) {
+  addNamedAsyncListener: function addNamedAsyncListener(name, eventName, callback) {
     callback._isAsync = true;
-    return this.addNamedListener(name, eventName, callback, toHead);
+    return this.addNamedListener(name, eventName, callback);
   },
 
   /**
@@ -229,7 +228,4 @@ AWS.SequentialExecutor = AWS.util.inherit({
  */
 AWS.SequentialExecutor.prototype.addListener = AWS.SequentialExecutor.prototype.on;
 
-/**
- * @api private
- */
 module.exports = AWS.SequentialExecutor;

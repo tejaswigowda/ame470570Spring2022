@@ -1,14 +1,13 @@
 var util = require('../util');
-var XmlNode = require('./xml-node').XmlNode;
-var XmlText = require('./xml-text').XmlText;
+var builder = require('xmlbuilder');
 
 function XmlBuilder() { }
 
 XmlBuilder.prototype.toXML = function(params, shape, rootElement, noEmpty) {
-  var xml = new XmlNode(rootElement);
-  applyNamespaces(xml, shape, true);
+  var xml = builder.create(rootElement);
+  applyNamespaces(xml, shape);
   serialize(xml, params, shape);
-  return xml.children.length > 0 || noEmpty ? xml.toString() : '';
+  return xml.children.length > 0 || noEmpty ? xml.root().toString() : '';
 };
 
 function serialize(xml, value, shape) {
@@ -29,12 +28,11 @@ function serializeStructure(xml, params, shape) {
     var name = memberShape.name;
     if (value !== undefined && value !== null) {
       if (memberShape.isXmlAttribute) {
-        xml.addAttribute(name, value);
+        xml.att(name, value);
       } else if (memberShape.flattened) {
         serialize(xml, value, memberShape);
       } else {
-        var element = new XmlNode(name);
-        xml.addChildNode(element);
+        var element = xml.ele(name);
         applyNamespaces(element, memberShape);
         serialize(element, value, memberShape);
       }
@@ -47,16 +45,9 @@ function serializeMap(xml, map, shape) {
   var xmlValue = shape.value.name || 'value';
 
   util.each(map, function(key, value) {
-    var entry = new XmlNode(shape.flattened ? shape.name : 'entry');
-    xml.addChildNode(entry);
-
-    var entryKey = new XmlNode(xmlKey);
-    var entryValue = new XmlNode(xmlValue);
-    entry.addChildNode(entryKey);
-    entry.addChildNode(entryValue);
-
-    serialize(entryKey, key, shape.key);
-    serialize(entryValue, value, shape.value);
+    var entry = xml.ele(shape.flattened ? shape.name : 'entry');
+    serialize(entry.ele(xmlKey), key, shape.key);
+    serialize(entry.ele(xmlValue), value, shape.value);
   });
 }
 
@@ -64,39 +55,32 @@ function serializeList(xml, list, shape) {
   if (shape.flattened) {
     util.arrayEach(list, function(value) {
       var name = shape.member.name || shape.name;
-      var element = new XmlNode(name);
-      xml.addChildNode(element);
+      var element = xml.ele(name);
       serialize(element, value, shape.member);
     });
   } else {
     util.arrayEach(list, function(value) {
       var name = shape.member.name || 'member';
-      var element = new XmlNode(name);
-      xml.addChildNode(element);
+      var element = xml.ele(name);
       serialize(element, value, shape.member);
     });
   }
 }
 
 function serializeScalar(xml, value, shape) {
-  xml.addChildNode(
-    new XmlText(shape.toWireFormat(value))
-  );
+  xml.txt(shape.toWireFormat(value));
 }
 
-function applyNamespaces(xml, shape, isRoot) {
+function applyNamespaces(xml, shape) {
   var uri, prefix = 'xmlns';
   if (shape.xmlNamespaceUri) {
     uri = shape.xmlNamespaceUri;
     if (shape.xmlNamespacePrefix) prefix += ':' + shape.xmlNamespacePrefix;
-  } else if (isRoot && shape.api.xmlNamespaceUri) {
+  } else if (xml.isRoot && shape.api.xmlNamespaceUri) {
     uri = shape.api.xmlNamespaceUri;
   }
 
-  if (uri) xml.addAttribute(prefix, uri);
+  if (uri) xml.att(prefix, uri);
 }
 
-/**
- * @api private
- */
 module.exports = XmlBuilder;

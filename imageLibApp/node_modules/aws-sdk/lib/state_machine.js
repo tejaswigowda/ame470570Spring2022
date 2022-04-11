@@ -39,7 +39,4 @@ AcceptorStateMachine.prototype.addState = function addState(name, acceptState, f
   return this;
 };
 
-/**
- * @api private
- */
 module.exports = AcceptorStateMachine;

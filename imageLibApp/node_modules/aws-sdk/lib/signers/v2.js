@@ -42,7 +42,4 @@ AWS.Signers.V2 = inherit(AWS.Signers.RequestSigner, {
 
 });
 
-/**
- * @api private
- */
 module.exports = AWS.Signers.V2;

@@ -19,7 +19,4 @@ AWS.Signers.V3Https = inherit(AWS.Signers.V3, {
   }
 });
 
-/**
- * @api private
- */
 module.exports = AWS.Signers.V3Https;
