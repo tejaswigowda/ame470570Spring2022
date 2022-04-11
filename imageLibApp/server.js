@@ -77,6 +77,7 @@ app.post('/uploadFile', function(req, res){
                 time: new Date().getTime(),
                 url: intname,
                 userid: req.user.local.email,
+                filter: 'none',
                 id: md5(req.user.local.email +  new Date().getTime().toString()),
                 name: "Untitled"
               }

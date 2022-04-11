@@ -4,6 +4,8 @@
     <title> Image Library </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cssgram/0.1.12/cssgram.min.css" integrity="sha512-kr3JaEexN5V5Br47Lbg4B548Db46ulHRGGwvyZMVjnghW1BKmqIjgEgVHV8D7V+Cbqm/VBgo3Rcbtv+mGLoWXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <script src='./asyncReq.js'></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -25,6 +27,12 @@
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 <script>
+function filterChanged()
+{
+  var fil = document.getElementById("selectedFilter").value;
+  $("#fullImage").removeClass().addClass(fil);
+}
+
 var fileUploaded = function()
 {
    var file = $('#theFileUploader').get(0);
@@ -71,6 +79,18 @@ function updateFriends()
 
 </script>
     <style>
+#fullImage{
+  background-size: contain;
+  width: 100%;
+  background-repeat: no-repeat;
+}
+
+.thumbnail{
+  height: 100px;
+  width: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
       #backButton{
         display: none;
       }
@@ -220,6 +240,7 @@ function updateFriends()
       var choices;
       function start(callback){
         $("#itemList .submenu").fadeOut(0);
+        $('select').formSelect();
         const element = document.querySelector('.js-choice');
         choices = new Choices(element,{ removeItems: true,removeItemButton: true});
         loadURL("./getAccountInfo", function(data){
@@ -238,8 +259,8 @@ function updateFriends()
         var i = 0;
         for (; i < list.length; i++){
           markup += "<button onclick='imgSelected("+i+")'>" +
+            "<div style='background-image:url(https://bucket470570.s3-us-west-2.amazonaws.com/" + list[i].url + ")' class='thumbnail'></div>" + 
             "<h1>" + list[i].name + "</h1>" + 
-            "<h2>" + list[i].url + "</h2>" + 
             "</button>";
         }
 
@@ -250,9 +271,14 @@ function updateFriends()
         document.getElementById("images").innerHTML  = markup;
       }
 
+      function imgSelected(index){
+        var data = allImages[index];
+        document.getElementById("fullImage").src = "https://bucket470570.s3-us-west-2.amazonaws.com/" + data.url 
+      }
+
       function feedSelected(index)
       {
-        $("body").removeClass().addClass("col2")
+      $("body").removeClass().addClass("col2")
         $("#feeds button").removeClass("selected");
         $("#feeds button:nth-of-type("+(index+1)+")").addClass("selected");
 
@@ -417,7 +443,19 @@ var doLogout = function()
         </div>
 
     </div>
-    <div id='itemDetails'> </div>
+    <div id='itemDetails'> 
+
+      <select onchange='filterChanged()' id='selectedFilter'>
+        <option disabled value='none'> Choose your filter... </option>
+        <option value='aden'> Aden </option>
+        <option value='_1977'> 1977 </option>
+        <option value='brannan'> brannan</option>
+        <option value='brooklyn'> brooklyn</option>
+        <option value='clarendon'> clarendon</option>
+      </select>
+      <img id='fullImage' width='100%' height='auto'>
+
+    </div>
       <a id='backButton' class="waves-effect waves-light btn blue" style='position:fixed;bottom:0;left:0;width:100px;' href='javascript:goBack()'><i style='margin-right:0' class="material-icons left">arrow_left</i>Back</a>
    </body>
 </html>
