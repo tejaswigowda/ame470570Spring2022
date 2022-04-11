@@ -1,3 +1,4 @@
+const md5 = require("md5");
 var fs = require('fs');
 var AWS = require('aws-sdk');
 AWS.config.loadFromPath('./credentials.json');
@@ -72,8 +73,17 @@ app.post('/uploadFile', function(req, res){
             ServerSideEncryption : 'AES256'
         };
         s3.putObject(params, function(err, data) {
-            res.end("success");
-            console.log(err);
+              var obj = {
+                time: new Date().getTime(),
+                url: intname,
+                userid: req.user.local.email,
+                id: md5(req.user.local.email +  new Date().getTime().toString()),
+                name: "Untitled"
+              }
+
+            db.collection("images").insert(obj, function(e,r){
+              res.send("1");
+            });
         });
     });
 });

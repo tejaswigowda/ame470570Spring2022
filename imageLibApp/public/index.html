@@ -49,8 +49,10 @@ var fileUploaded = function()
     xhr.onreadystatechange = function(e) {  
       if (xhr.readyState != 4) { return; }
         // callback logic
-       console.log("https://bucket470570.s3-us-west-2.amazonaws.com/" + fileInput);
-       document.getElementById("preview").src = "https://bucket470570.s3-us-west-2.amazonaws.com/" + fileInput;
+         loadURL("./getAllImages", function(data){
+            allImages = JSON.parse(data);
+            generateImageList();
+          }); 
     };
     xhr.open("POST", "/uploadFile", true);
     xhr.send(fd);
