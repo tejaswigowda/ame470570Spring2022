@@ -1,0 +1,461 @@
+<!doctype html>
+<html>
+  <head>
+    <title> Image Library </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cssgram/0.1.12/cssgram.min.css" integrity="sha512-kr3JaEexN5V5Br47Lbg4B548Db46ulHRGGwvyZMVjnghW1BKmqIjgEgVHV8D7V+Cbqm/VBgo3Rcbtv+mGLoWXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src='./asyncReq.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/choices.js@9.0.1/public/assets/styles/choices.min.css"
+/>
+
+<!-- Include Choices JavaScript (latest) -->
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+<script>
+function filterChanged()
+{
+  var fil = document.getElementById("selectedFilter").value;
+  $("#fullImage").removeClass().addClass(fil);
+}
+
+var fileUploaded = function()
+{
+   var file = $('#theFileUploader').get(0);
+   var fileObj = $('#theFileUploader').get(0).files[0]
+   if(fileObj.size > 5 *1000 * 1000){
+    alert("Please upload a smaller file!");
+    return;
+   }
+   var filename = fileObj.name;
+   var ext = filename.split(".");
+   ext = ext[ext.length-1];
+   console.log(ext);
+
+   var fd = new FormData();
+   var fileInput = "asurite-s3Upload_" + new Date().getTime().toString() + "." + ext;
+   fd.append('fileInput', fileInput);
+   fd.append('input', file.files[0]);
+   fd.append('date', (new Date()).toString());
+
+    //fd.append('data', data);
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function(e) {  
+      if (xhr.readyState != 4) { return; }
+        // callback logic
+         loadURL("./getAllImages", function(data){
+            allImages = JSON.parse(data);
+            generateImageList();
+          }); 
+    };
+    xhr.open("POST", "/uploadFile", true);
+    xhr.send(fd);
+}
+
+function updateFriends()
+{
+  var list = document.getElementById("friendList").value;
+  var url = "./updateFriends?list="+ list
+     + "&fname=" + document.getElementById("fname").value
+     + "&lname=" + document.getElementById("lname").value
+  console.log(url);
+  loadURL(url, function(data){
+  });
+}
+
+</script>
+    <style>
+#fullImage{
+  background-size: contain;
+  width: 100%;
+  background-repeat: no-repeat;
+}
+
+.thumbnail{
+  height: 100px;
+  width: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+      #backButton{
+        display: none;
+      }
+      body{
+        margin:0;
+      }
+      #itemDetails{
+        text-align:center;
+      }
+      #itemDetails a h1{
+        font-size: 24px;
+      }
+      #itemDetails a h2{
+        font-size: 20px;
+      }
+      #feedList{
+        position:absolute;
+        width: 30vw;
+        background: lightblue;
+        height: 100vh;
+        overflow-y: auto;
+      }
+      #itemList{
+        position:absolute;
+        width: 30vw;
+        background: lightgray;
+        height: 100vh;
+        overflow-y: auto;
+        margin-left: 30vw;
+      }
+      #feeds button
+      {
+          width: 100%;
+          height: 100px;
+          padding: 0;
+      }
+      #itemList > button
+      {
+          width: 100%;
+          height: 100px;
+          padding: 0;
+      }
+      #itemList button img{
+        float: left;
+      }
+      #itemList button h1,
+      #feeds button h1
+      {
+          text-overflow: ellipsis;
+          word-break: break-word;
+          overflow: hidden;
+          height: 30px;
+          white-space: nowrap;
+          text-align:left;
+          font-size: 24px;
+          padding: 0;
+          padding-left: 10px;
+          margin: 0;
+      }
+      #itemList button h2,
+      #feeds button h2{
+          text-overflow: ellipsis;
+          word-break: break-word;
+          overflow: hidden;
+          height: 30px;
+          font-size: 20px;
+          white-space: nowrap;
+          text-align:left;
+          padding: 0;
+          padding-left: 10px;
+          margin: 0;
+      }
+      #itemDetails{
+        width: 40vw;
+        height: 100vh;
+        overflow: auto;
+        right: 0;
+        position: absolute;
+        padding-top: 50px;
+      }
+
+      .selected{
+        background-color: #2ab7a9;
+      }
+
+      @media (max-width: 500px){
+        body.col2 #backButton,
+        body.col3 #backButton
+        {
+          display: block;
+        }
+        body.col2 #feedList{
+          display: none;
+        }
+        body.col2 #itemList{
+          display: block;
+        }
+        body.col2 #itemDetails{
+          display: none;
+        }
+
+        body.col3 #feedList{
+          display: none;
+        }
+        body.col3 #itemList{
+          display: none;
+        }
+        body.col3 #itemDetails{
+          display: block;
+        }
+
+        #feedList{
+          width: 100vw;
+          margin-left: 0;
+        }
+        #itemList{
+          width: 100vw;
+          margin-left: 0;
+          display: none;
+        }
+        #itemDetails{
+          width: 100vw;
+          margin-left: 0;
+          display: none;
+        }
+      }
+    </style>
+    <script>
+	function goBack(){
+	   if($('body').hasClass('col3')){
+		$("body").removeClass().addClass("col2")
+		$("#itemList button").removeClass("selected");
+		document.getElementById("itemDetails").innerHTML = "";
+	   }
+	   else if($('body').hasClass('col2')){
+		$("body").removeClass()
+		$("#feeds button").removeClass("selected");
+		document.getElementById("itemList").innerHTML = "";
+	   }
+   	   else{
+		$("body").removeClass()
+	   }
+
+	}
+      var allImages;
+      var jsonObj;
+      var choices;
+      function start(callback){
+        $("#itemList .submenu").fadeOut(0);
+        $('select').formSelect();
+        const element = document.querySelector('.js-choice');
+        choices = new Choices(element,{ removeItems: true,removeItemButton: true});
+        loadURL("./getAccountInfo", function(data){
+          var aInfo = JSON.parse(data);
+          choices.setValue(aInfo.friends);
+          document.getElementById("fname").value = aInfo.fname || "";
+          document.getElementById("lname").value = aInfo.lname || "";
+        });
+
+      }
+
+      function generateImageList()
+      {
+        var list = allImages;
+        var markup = "";
+        var i = 0;
+        for (; i < list.length; i++){
+          markup += "<button onclick='imgSelected("+i+")'>" +
+            "<div style='background-image:url(https://bucket470570.s3-us-west-2.amazonaws.com/" + list[i].url + ")' class='thumbnail'></div>" + 
+            "<h1>" + list[i].name + "</h1>" + 
+            "</button>";
+        }
+
+        if(i==0){
+          markup = "<h3> No images yet! Add some.</h3>"
+        }
+
+        document.getElementById("images").innerHTML  = markup;
+      }
+
+      function imgSelected(index){
+        var data = allImages[index];
+        document.getElementById("fullImage").src = "https://bucket470570.s3-us-west-2.amazonaws.com/" + data.url 
+      }
+
+      function feedSelected(index)
+      {
+      $("body").removeClass().addClass("col2")
+        $("#feeds button").removeClass("selected");
+        $("#feeds button:nth-of-type("+(index+1)+")").addClass("selected");
+
+        $("#itemList .submenu").fadeOut(0);
+        $("#itemList .submenu:nth-of-type("+(index+1)+")").fadeIn();
+
+
+        if(index == 0){ // load dashboard
+        }
+        if(index == 1){ // load images
+          loadURL("./getAllImages", function(data){
+            allImages = JSON.parse(data);
+            generateImageList();
+          });
+        }
+        if(index == 2){ // load friends
+        }
+        else{ // load account page
+        }
+        /*
+        */
+
+      }
+
+      function generateMarkup(index)
+      {
+        var list = jsonObj.feed.results;
+        var markup = '<a class="waves-effect waves-light btn blue" href="javascript:editFeed('+index+')"><i class="material-icons left">create</i>Edit Feed</a>'
+          + '<a class="waves-effect waves-light btn red" style="float:right" href="javascript:deleteFeed('+index+')"><i class="material-icons left">delete</i>Delete Feed</a>'
+ //       var markup = "<button onclick=editFeed("+index+")><h2>Edit This Feed<h2></button>"
+ //           + "<button onclick=deleteFeed("+index+")><h2>Delete This Feed<h2></button>";
+        for (var i = 0; i < list.length; i++){
+         markup += "<button onclick='itemClicked("+ i +")'>" +
+            "<img src='"+ list[i].artworkUrl100 +"'>" +
+            "<h1>" + list[i].name + "</h1>" + 
+            "<h2>" + list[i].artistName + "</h2>" + 
+            "</button>";
+        }
+
+        document.getElementById("itemList").innerHTML  = markup;
+      }
+
+       function itemClicked(index){
+        $("body").removeClass().addClass("col3")
+        $("#itemList button").removeClass("selected");
+        $("#itemList button:nth-of-type("+(index+1)+")").addClass("selected");
+
+        var item = jsonObj.feed.results[index];
+          markup =
+              "<img width=300 src='"+ item.artworkUrl100 +"'>" +
+              "<a target='_blank' href='"+ item.url + "'><h1>" + item.name + "</h1></a>" +
+              "<a target='_blank' href='"+ item.artistUrl +"'><h2>" + item.artistName + "</h2></a>" +
+              "<p><i>"+ moment(item.releaseDate).format('MMMM Do YYYY'); + "</i></p>"
+          document.getElementById("itemDetails").innerHTML  = markup;
+      }
+
+      function addNew()
+      {
+        var feed = prompt("Enter Feed URL:");
+        if(feed === null) return;
+        var url = "./addFeed?url=" + feed;
+        loadURL(url, function(data){
+            start();
+        });
+      }
+      
+      function deleteFeed(index){
+        var id = allImages[index].id;
+        var x = confirm("Are you sure?");
+        if(!x) return;
+        var url = "./deleteFeed?id=" + id;
+        loadURL(url, function(data){
+          start();
+          document.getElementById("itemList").innerHTML = "";
+        });
+      }
+      
+      function editFeed(index){
+        var title = allImages[index].name;
+        var id = allImages[index].id;
+        var newName = prompt("Edit Feed Name:", title);
+        var url = "./editFeed?id=" + id + "&newName=" + newName;
+        loadURL(url, function(data){
+          start(
+            function(){ $("#feeds button:nth-of-type("+(index+1)+")").addClass("selected");
+          });
+        });
+      }
+
+      var main = function(){
+  // check whether user is logged in
+  loadURL("/loginStatus", function(data){
+    if(data === "0"){
+      window.location.href='./login.html'
+      return;
+    }
+    else{
+      start();
+    }
+  });               
+}
+
+var doLogout = function()
+{
+  var x = confirm("Logout now?")
+  if(x){
+    loadURL("./logout", function(d){window.location.reload()})
+  }
+}
+    </script>
+  </head>
+  <body onload='main()'>
+
+    <div id='feedList'>
+      <div id='logo' style='
+            background-image: url(https://png.pngtree.com/element_pic/00/16/07/115783931601b5c.jpg);
+            height: 100px;
+            background-size: contain;
+            background-position: 50%;
+            background-repeat: no-repeat;
+
+        '> </div>
+
+      <div id='feeds'>
+     <button onclick="feedSelected(0)"><h1>Dashboard</h1></button>
+     <button onclick="feedSelected(1)"><h1>Image Library</h1></button>
+     <button onclick="feedSelected(2)"><h1>Friends</h1></button>
+     <button onclick="feedSelected(3)"><h1>Account</h1></button>
+      </div>
+      <a id='logoutButton' class="waves-effect waves-light btn red" style='position:fixed;bottom:0;left:0;width:100px;' href='javascript:doLogout()'>Logout</a>
+    </div>
+    <div id='itemList'> 
+        <div class='submenu'>
+          <h1> Dashboard </h1>
+        </div>
+
+        <div class='submenu'>
+          <h1> Image Library</h1>
+                <div id='images'> </div>
+              <a class="waves-effect waves-light btn blue" style='position:fixed;bottom:0;'>Upload
+                  <input type='file' id='theFileUploader' onchange='fileUploaded()' accept="image/png, image/jpeg"
+                  style='
+                      position: absolute;
+                      left: 0;
+                      height: 100%;
+                      width: 100%;
+                      opacity: 0;
+                  '
+                  > 
+              </a>
+        </div>
+
+        <div class='submenu'>
+          <h1> Friends</h1>
+          <input type='text 'class='js-choice' id='friendList' onchange='updateFriends()'>
+        </div>
+
+        <div class='submenu'>
+          <h1> Account </h1>
+          <input type='text' id='fname' onchange='updateFriends()'>
+          <input type='text' id='lname' onchange='updateFriends()'>
+        </div>
+
+    </div>
+    <div id='itemDetails'> 
+
+      <select onchange='filterChanged()' id='selectedFilter'>
+        <option disabled value='none'> Choose your filter... </option>
+        <option value='aden'> Aden </option>
+        <option value='_1977'> 1977 </option>
+        <option value='brannan'> brannan</option>
+        <option value='brooklyn'> brooklyn</option>
+        <option value='clarendon'> clarendon</option>
+      </select>
+      <img id='fullImage' width='100%' height='auto'>
+
+    </div>
+      <a id='backButton' class="waves-effect waves-light btn blue" style='position:fixed;bottom:0;left:0;width:100px;' href='javascript:goBack()'><i style='margin-right:0' class="material-icons left">arrow_left</i>Back</a>
+   </body>
+</html>
