@@ -271,7 +271,9 @@ function updateFriends()
         document.getElementById("images").innerHTML  = markup;
       }
 
+      var currImgIndex = 0;
       function imgSelected(index){
+        currImgIndex = index;
         var data = allImages[index];
         document.getElementById("fullImage").src = "https://bucket470570.s3-us-west-2.amazonaws.com/" + data.url 
       }
