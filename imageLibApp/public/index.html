@@ -356,26 +356,25 @@ function updateFriends()
         });
       }
       
-      function deleteFeed(index){
+      function deleteImage(){
+        var index = currImageIndex;
         var id = allImages[index].id;
         var x = confirm("Are you sure?");
         if(!x) return;
         var url = "./deleteFeed?id=" + id;
         loadURL(url, function(data){
-          start();
-          document.getElementById("itemList").innerHTML = "";
+          feedSelected(1);
         });
       }
       
-      function editFeed(index){
+      function editImage(){
+        var index = currImageIndex;
         var title = allImages[index].name;
         var id = allImages[index].id;
         var newName = prompt("Edit Feed Name:", title);
-        var url = "./editFeed?id=" + id + "&newName=" + newName;
+        var url = "./editImage?id=" + id + "&newName=" + newName;
         loadURL(url, function(data){
-          start(
-            function(){ $("#feeds button:nth-of-type("+(index+1)+")").addClass("selected");
-          });
+          feedSelected(1);
         });
       }
 
@@ -465,6 +464,11 @@ var doLogout = function()
         <option value='clarendon'> clarendon</option>
       </select>
       <img id='fullImage' width='100%' height='auto'>
+
+      <a id="editButton" class="waves-effect waves-light btn blue" style="position:fixed;bottom:0;right:100px;width:100px;" href="javascript:editImage()">Edit</a>
+
+      <a id="deleteButton" class="waves-effect waves-light btn red" style="position:fixed;bottom:0;right:0;width:100px;" href="javascript:deleteImage()">Delete</a>
+
 
     </div>
       <a id='backButton' class="waves-effect waves-light btn blue" style='position:fixed;bottom:0;left:0;width:100px;' href='javascript:goBack()'><i style='margin-right:0' class="material-icons left">arrow_left</i>Back</a>

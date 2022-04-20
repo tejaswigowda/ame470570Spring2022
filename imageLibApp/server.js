@@ -145,10 +145,23 @@ app.get("/addFeed", function (req, res) {
   });
 });
 
-app.get("/deleteFeed", function (req, res) {
+app.get("/deleteImage", function (req, res) {
   var id = req.query.id;
   db.collection("data").remove({id:id}, function(e,r){
       res.send("1");
+  });
+});
+
+
+app.get("/editImage", function (req, res) {
+  var id = req.query.id;
+  var newname= req.query.newName;
+  db.collection("images").findOne({id:id}, function(e,r){
+    console.log(r);
+    r.name= newname;
+    db.collection("images").save(r, function(e1,r1){
+      res.send("1");
+    });
   });
 });
 
