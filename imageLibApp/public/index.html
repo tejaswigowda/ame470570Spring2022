@@ -243,6 +243,7 @@ function updateFriends()
       var choices;
       function start(callback){
         $("#itemList .submenu").fadeOut(0);
+        $("#itemDetails").fadeOut(0);
         $('select').formSelect();
         const element = document.querySelector('.js-choice');
         choices = new Choices(element,{ removeItems: true,removeItemButton: true});
@@ -276,6 +277,7 @@ function updateFriends()
 
       var currImageIndex = 0;
       function imgSelected(index){
+        $("#itemDetails").fadeIn();
         currImageIndex = index;
         $("#images button").removeClass("selected");
         $("#images button:nth-of-type("+(index+1)+")").addClass("selected");
@@ -303,6 +305,7 @@ function updateFriends()
           loadURL("./getAllImages", function(data){
             allImages = JSON.parse(data);
             generateImageList();
+            $("#itemDetails").fadeOut();
           });
         }
         if(index == 2){ // load friends
