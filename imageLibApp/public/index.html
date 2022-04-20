@@ -27,6 +27,14 @@
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 <script>
+function fmSelected(arg, index)
+{
+  $("#itemDetails .submenu").fadeOut(0);
+  $("#itemDetails .submenu#" + arg).fadeIn(0);
+  $("#fsubmenu button").removeClass("selected");
+  $("#fsubmenu button:nth-of-type("+(index+1)+")").addClass("selected");
+}
+
 function filterChanged()
 {
   var fil = document.getElementById("selectedFilter").value;
@@ -243,7 +251,7 @@ function updateFriends()
       var choices;
       function start(callback){
         $("#itemList .submenu").fadeOut(0);
-        $("#itemDetails").fadeOut(0);
+        $(".submenu").fadeOut(0);
         $('select').formSelect();
         const element = document.querySelector('.js-choice');
         choices = new Choices(element,{ removeItems: true,removeItemButton: true});
@@ -277,7 +285,8 @@ function updateFriends()
 
       var currImageIndex = 0;
       function imgSelected(index){
-        $("#itemDetails").fadeIn();
+        $("#itemDetails .submenu").fadeOut();
+        $(".submenu#imageEditor").fadeIn();
         currImageIndex = index;
         $("#images button").removeClass("selected");
         $("#images button:nth-of-type("+(index+1)+")").addClass("selected");
@@ -296,16 +305,17 @@ function updateFriends()
         $("#feeds button:nth-of-type("+(index+1)+")").addClass("selected");
 
         $("#itemList .submenu").fadeOut(0);
-        $("#itemList .submenu:nth-of-type("+(index+1)+")").fadeIn();
+        $("#itemDetails .submenu").fadeOut(0);
+        $("#itemList .submenu:nth-of-type("+ (index + 1)+")").fadeIn(0);
 
 
         if(index == 0){ // load dashboard
         }
         if(index == 1){ // load images
+ //         $("#itemList ")").fadeIn();
           loadURL("./getAllImages", function(data){
             allImages = JSON.parse(data);
             generateImageList();
-            $("#itemDetails").fadeOut();
           });
         }
         if(index == 2){ // load friends
@@ -444,9 +454,10 @@ var doLogout = function()
               </a>
         </div>
 
-        <div class='submenu'>
+        <div id='fsubmenu' class='submenu'>
           <h1> Friends</h1>
-          <input type='text 'class='js-choice' id='friendList' onchange='updateFriends()'>
+           <button onclick="fmSelected('manageFriends',0)"><h1>Manage</h1></button>
+           <button onclick="fmSelected('chatFriends',1)"><h1>Chat</h1></button>
         </div>
 
         <div class='submenu'>
@@ -458,6 +469,7 @@ var doLogout = function()
     </div>
     <div id='itemDetails'> 
 
+     <div id='imageEditor' class='submenu'>
       <select onchange='filterChanged()' id='selectedFilter'>
         <option disabled value='none'> Choose your filter... </option>
         <option value='aden'> Aden </option>
@@ -472,6 +484,20 @@ var doLogout = function()
 
       <a id="deleteButton" class="waves-effect waves-light btn red" style="position:fixed;bottom:0;right:0;width:100px;" href="javascript:deleteImage()">Delete</a>
 
+    </div>
+
+
+
+    <div id='manageFriends' class='submenu'>
+      <h2> Manage Friends </h2>
+       <input type='text 'class='js-choice' id='friendList' onchange='updateFriends()'>
+    </div>
+
+
+
+    <div id='chatFriends' class='submenu'>
+      <h2> Chat Friends </h2>
+    </div>
 
     </div>
       <a id='backButton' class="waves-effect waves-light btn blue" style='position:fixed;bottom:0;left:0;width:100px;' href='javascript:goBack()'><i style='margin-right:0' class="material-icons left">arrow_left</i>Back</a>
