@@ -364,7 +364,7 @@ function updateFriends()
         var id = allImages[index].id;
         var x = confirm("Are you sure?");
         if(!x) return;
-        var url = "./deleteFeed?id=" + id;
+        var url = "./deleteImage?id=" + id;
         loadURL(url, function(data){
           feedSelected(1);
         });
