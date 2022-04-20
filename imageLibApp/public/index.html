@@ -31,6 +31,9 @@ function filterChanged()
 {
   var fil = document.getElementById("selectedFilter").value;
   $("#fullImage").removeClass().addClass(fil);
+  loadURL("./changeFilter?id=" + allImages[currImageIndex].id + "&filter=" + fil, function(data){
+      allImages[currImageIndex].filter = fil; 
+  });
 }
 
 var fileUploaded = function()
@@ -271,9 +274,17 @@ function updateFriends()
         document.getElementById("images").innerHTML  = markup;
       }
 
+      var currImageIndex = 0;
       function imgSelected(index){
+        currImageIndex = index;
+        $("#images button").removeClass("selected");
+        $("#images button:nth-of-type("+(index+1)+")").addClass("selected");
         var data = allImages[index];
+        var fil = data.filter;
         document.getElementById("fullImage").src = "https://bucket470570.s3-us-west-2.amazonaws.com/" + data.url 
+        $("#fullImage").removeClass().addClass(fil);
+        document.getElementById("selectedFilter").value = fil;
+        $("select").formSelect();
       }
 
       function feedSelected(index)

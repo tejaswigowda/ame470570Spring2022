@@ -153,13 +153,13 @@ app.get("/deleteFeed", function (req, res) {
 });
 
 
-app.get("/editFeed", function (req, res) {
+app.get("/changeFilter", function (req, res) {
   var id = req.query.id;
-  var newName = req.query.newName;
-  db.collection("data").findOne({id:id}, function(e,r){
+  var newfil = req.query.filter;
+  db.collection("images").findOne({id:id}, function(e,r){
     console.log(r);
-    r.name = newName;
-    db.collection("data").save(r, function(e1,r1){
+    r.filter = newfil;
+    db.collection("images").save(r, function(e1,r1){
       res.send("1");
     });
   });
