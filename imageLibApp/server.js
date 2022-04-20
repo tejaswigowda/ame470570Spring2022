@@ -147,7 +147,7 @@ app.get("/addFeed", function (req, res) {
 
 app.get("/deleteImage", function (req, res) {
   var id = req.query.id;
-  db.collection("data").remove({id:id}, function(e,r){
+  db.collection("images").remove({id:id}, function(e,r){
       res.send("1");
   });
 });
