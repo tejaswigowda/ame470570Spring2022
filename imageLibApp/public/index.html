@@ -34,14 +34,38 @@ function chatTyped(event){
     var time = new Date().getTime();
     var id = chatid + time;
     var msg = document.getElementById("userChatInput").value;
-    var url = "./postChat?id=" + id + "&chatid=" + chatid + "&msg=" + msg + "&time=" + time + "&userid=" + userid;
+    var url = "./postChat?id=" + id + "&chatid=" + chatid + "&msg=" + msg + "&time=" + time + "&userid=" + myUserID;
     loadURL(url, function(data){
       document.getElementById("userChatInput").value = "";
-      updateChat();
+      updateChat(chatid);
     });
   }
 }
 
+var lastChatTime = 0;
+
+
+function updateChat()
+{
+  var fuid = document.getElementById("friendSelect").value;
+  var chatid = [myUserID, fuid].sort().join("");
+  loadURL("./getLatestChat?chatid="+chatid, function(data){
+    var list = JSON.parse(data);
+    for(var i = 0; i < list.length; i++){
+      if(lastChatTime < list[i].time){
+        var cl='me';
+        if(list[i].userid === fuid){
+          cl="you";
+        }
+
+        $("#chatDiv").append("<div class='chatBubble " + cl + "'>" + list[i].msg + "</div>")
+        lastChatTime = list[i].time;
+      }
+    }
+  
+  });
+      
+}
 function fmSelected(arg, index)
 {
   $("#itemDetails .submenu").fadeOut(0);
@@ -57,7 +81,17 @@ function fmSelected(arg, index)
     console.log(markup);
     document.getElementById("friendSelect").innerHTML = markup;
     $("#friendSelect").formSelect();
+    lastChatTime = 0;
+    document.getElementById("chatDiv").innerHTML = "";
+    updateChat();
   }
+}
+
+function friendChanged()
+{
+     lastChatTime = 0;
+    document.getElementById("chatDiv").innerHTML = "";
+    updateChat();
 }
 
 function filterChanged()
@@ -116,6 +150,12 @@ function updateFriends()
 
 </script>
     <style>
+.me{
+  background: lightgray;
+}
+.you{
+  background: lightblue;
+}
 #fullImage{
   background-size: contain;
   width: 100%;
@@ -528,7 +568,7 @@ var doLogout = function()
 
     <div id='chatFriends' class='submenu'>
       <h2> Chat Friends </h2>
-      <select id='friendSelect'>
+      <select onchange='friendChanged()' id='friendSelect'>
       </select>
       <div id='chatDiv' style='height: 50vh'>
       </div>

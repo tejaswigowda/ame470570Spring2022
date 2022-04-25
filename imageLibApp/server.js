@@ -130,6 +130,13 @@ app.get("/updateFriends", function (req, res) {
 });
 
 
+app.get("/postChat", function (req, res) {
+  db.collection("chat").insert(req.query, function(e,r){
+    res.send("1");
+  });
+});
+
+
 app.get("/addFeed", function (req, res) {
   var url = req.query.url;
   var obj = {
@@ -180,6 +187,14 @@ app.get("/changeFilter", function (req, res) {
 
 app.get("/getAllFeeds", function (req, res) {
   db.collection("data").find({userid:req.user.local.email}).toArray(function(e,r){
+    res.send(JSON.stringify(r))
+  });
+});
+
+
+app.get("/getLatestChat", function (req, res) {
+  var chatid = req.query.chatid;
+  db.collection("chat").find({chatid:chatid}).limit(10).sort({time:-1}).toArray(function(e,r){
     res.send(JSON.stringify(r))
   });
 });
