@@ -27,12 +27,29 @@
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 <script>
+function chatTyped(event){
+  if(event.keyCode === 13){
+    var u1 = 
+    var url = "./postChat?
+  }
+}
+
 function fmSelected(arg, index)
 {
   $("#itemDetails .submenu").fadeOut(0);
   $("#itemDetails .submenu#" + arg).fadeIn(0);
   $("#fsubmenu button").removeClass("selected");
   $("#fsubmenu button:nth-of-type("+(index+1)+")").addClass("selected");
+  console.log(arg);
+  if(arg === "chatFriends"){
+    var markup = "";
+    for(var i = 0; i < allFriends.length; i++){
+      markup += "<option val='"+allFriends[i] +"'>" + allFriends[i] + "</option>"
+    }
+    console.log(markup);
+    document.getElementById("friendSelect").innerHTML = markup;
+    $("#friendSelect").formSelect();
+  }
 }
 
 function filterChanged()
@@ -80,6 +97,7 @@ var fileUploaded = function()
 function updateFriends()
 {
   var list = document.getElementById("friendList").value;
+  allFriends = list.split(",")
   var url = "./updateFriends?list="+ list
      + "&fname=" + document.getElementById("fname").value
      + "&lname=" + document.getElementById("lname").value
@@ -249,6 +267,9 @@ function updateFriends()
       var allImages;
       var jsonObj;
       var choices;
+      var allFriends = [];
+      var myUserID = "";
+
       function start(callback){
         $("#itemList .submenu").fadeOut(0);
         $(".submenu").fadeOut(0);
@@ -257,6 +278,8 @@ function updateFriends()
         choices = new Choices(element,{ removeItems: true,removeItemButton: true});
         loadURL("./getAccountInfo", function(data){
           var aInfo = JSON.parse(data);
+          console.log(aInfo)
+          allFriends = aInfo.friends;
           choices.setValue(aInfo.friends);
           document.getElementById("fname").value = aInfo.fname || "";
           document.getElementById("lname").value = aInfo.lname || "";
@@ -497,6 +520,11 @@ var doLogout = function()
 
     <div id='chatFriends' class='submenu'>
       <h2> Chat Friends </h2>
+      <select id='friendSelect'>
+      </select>
+      <div id='chatDiv' style='height: 50vh'>
+      </div>
+      <textarea style='height: 100px;bottom:0' onkeydown="chatTyped(event)" id='userChatInput'></textarea>
     </div>
 
     </div>
