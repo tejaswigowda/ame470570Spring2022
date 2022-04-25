@@ -29,8 +29,16 @@
 <script>
 function chatTyped(event){
   if(event.keyCode === 13){
-    var u1 = 
-    var url = "./postChat?
+    var fuid = document.getElementById("friendSelect").value;
+    var chatid = [myUserID, fuid].sort().join("");
+    var time = new Date().getTime();
+    var id = chatid + time;
+    var msg = document.getElementById("userChatInput").value;
+    var url = "./postChat?id=" + id + "&chatid=" + chatid + "&msg=" + msg + "&time=" + time + "&userid=" + userid;
+    loadURL(url, function(data){
+      document.getElementById("userChatInput").value = "";
+      updateChat();
+    });
   }
 }
 
@@ -278,7 +286,7 @@ function updateFriends()
         choices = new Choices(element,{ removeItems: true,removeItemButton: true});
         loadURL("./getAccountInfo", function(data){
           var aInfo = JSON.parse(data);
-          console.log(aInfo)
+          myUserID = aInfo.userid;
           allFriends = aInfo.friends;
           choices.setValue(aInfo.friends);
           document.getElementById("fname").value = aInfo.fname || "";
