@@ -1,5 +1,5 @@
 # Assignment 8
-`Due Apr 30th, before midnight`
+`Due May 2nd, before midnight`
 
 ## Task
 
