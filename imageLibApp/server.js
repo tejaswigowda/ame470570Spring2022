@@ -203,7 +203,7 @@ app.get("/getAllFeeds", function (req, res) {
 
 app.get("/getLatestChat", function (req, res) {
   var chatid = req.query.chatid;
-  db.collection("chat").find({chatid:chatid}).limit(10).sort({time:-1}).toArray(function(e,r){
+  db.collection("chat").find({chatid:chatid}).sort({time:-1}).limit(10).toArray(function(e,r){
     res.send(JSON.stringify(r))
   });
 });

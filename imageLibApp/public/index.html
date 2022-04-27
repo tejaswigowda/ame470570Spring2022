@@ -27,6 +27,9 @@
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
 
 <script>
+setInterval("updateChat()", 500);
+var chatActive = false;
+
 function chatTyped(event){
   if(event.keyCode === 13){
     var fuid = document.getElementById("friendSelect").value;
@@ -37,7 +40,8 @@ function chatTyped(event){
     var url = "./postChat?id=" + id + "&chatid=" + chatid + "&msg=" + msg + "&time=" + time + "&userid=" + myUserID;
     loadURL(url, function(data){
       document.getElementById("userChatInput").value = "";
-      updateChat();
+      var objDiv = document.getElementById("chatDiv");
+      objDiv.scrollTop = objDiv.scrollHeight;
     });
   }
 }
@@ -47,10 +51,12 @@ var lastChatTime = 0;
 
 function updateChat()
 {
+  if(!chatActive) return;
+
   var fuid = document.getElementById("friendSelect").value;
   var chatid = [myUserID, fuid].sort().join("");
   loadURL("./getLatestChat?chatid="+chatid, function(data){
-    var list = JSON.parse(data);
+    var list = JSON.parse(data).reverse();
     for(var i = 0; i < list.length; i++){
       if(lastChatTime < list[i].time){
         var cl='me';
@@ -68,12 +74,15 @@ function updateChat()
 }
 function fmSelected(arg, index)
 {
+  chatActive = false;
   $("#itemDetails .submenu").fadeOut(0);
   $("#itemDetails .submenu#" + arg).fadeIn(0);
   $("#fsubmenu button").removeClass("selected");
   $("#fsubmenu button:nth-of-type("+(index+1)+")").addClass("selected");
   console.log(arg);
   if(arg === "chatFriends"){
+    chatActive = true;
+    lastChatTime = 0;
     var markup = "";
     for(var i = 0; i < allFriends.length; i++){
       markup += "<option val='"+allFriends[i] +"'>" + allFriends[i] + "</option>"
@@ -83,7 +92,7 @@ function fmSelected(arg, index)
     $("#friendSelect").formSelect();
     lastChatTime = 0;
     document.getElementById("chatDiv").innerHTML = "";
-    updateChat();
+    chatActive = true;
   }
 }
 
@@ -91,7 +100,6 @@ function friendChanged()
 {
      lastChatTime = 0;
     document.getElementById("chatDiv").innerHTML = "";
-    updateChat();
 }
 
 function filterChanged()
@@ -152,9 +160,21 @@ function updateFriends()
     <style>
 .me{
   background: lightgray;
+  text-align:right;
+  border-radius: 10px;
+  margin-top: 10px;
+  width: 80%;
+  margin-left:18%;
+  padding: 10px;
 }
 .you{
   background: lightblue;
+  text-align:left;
+  border-radius: 10px;
+  margin-top: 10px;
+  width: 80%;
+  margin-left:2%;
+  padding: 10px;
 }
 #fullImage{
   background-size: contain;
@@ -327,6 +347,7 @@ function updateFriends()
         loadURL("./getAccountInfo", function(data){
           var aInfo = JSON.parse(data);
           myUserID = aInfo.userid;
+          document.getElementById("userid").innerHTML = myUserID;
           allFriends = aInfo.friends;
           choices.setValue(aInfo.friends);
           document.getElementById("fname").value = aInfo.fname || "";
@@ -371,6 +392,7 @@ function updateFriends()
 
       function feedSelected(index)
       {
+        chatActive = false;
       $("body").removeClass().addClass("col2")
         $("#feeds button").removeClass("selected");
         $("#feeds button:nth-of-type("+(index+1)+")").addClass("selected");
@@ -495,6 +517,7 @@ var doLogout = function()
             background-repeat: no-repeat;
 
         '> </div>
+      <h5 id='userid' style='text-align:center'> </h5>
 
       <div id='feeds'>
      <button onclick="feedSelected(0)"><h1>Dashboard</h1></button>
@@ -570,7 +593,7 @@ var doLogout = function()
       <h2> Chat Friends </h2>
       <select onchange='friendChanged()' id='friendSelect'>
       </select>
-      <div id='chatDiv' style='height: 50vh'>
+      <div id='chatDiv' style='height: 50vh;overflow:auto;'>
       </div>
       <textarea style='height: 100px;bottom:0' onkeydown="chatTyped(event)" id='userChatInput'></textarea>
     </div>
