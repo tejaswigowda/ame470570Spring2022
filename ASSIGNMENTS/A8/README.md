@@ -8,5 +8,7 @@ and add the Dashboard menu.
 
 
 The following request handler has been implemented:
+
 http://localhost:8080/getDashboardList
+
 http://localhost:8080/getDashboardList?skip=<num> (optional).
