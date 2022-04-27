@@ -1,5 +1,5 @@
 # Final
---- `Due May 2nd, before midnight` ---
+~~ `Due May 2nd, before midnight` ~~
 
 `Due May 5th, before midnight` (no extensions!!!)
 
