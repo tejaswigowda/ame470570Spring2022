@@ -68,10 +68,11 @@ function updateChat()
         lastChatTime = list[i].time;
       }
     }
-  
+    var objDiv = document.getElementById("chatDiv");
+    objDiv.scrollTop = objDiv.scrollHeight;
   });
-      
 }
+
 function fmSelected(arg, index)
 {
   chatActive = false;
@@ -593,7 +594,7 @@ var doLogout = function()
       <h2> Chat Friends </h2>
       <select onchange='friendChanged()' id='friendSelect'>
       </select>
-      <div id='chatDiv' style='height: 50vh;overflow:auto;'>
+      <div id='chatDiv' style='height:50vh;padding-bottom:10px;overflow:auto;'>
       </div>
       <textarea style='height: 100px;bottom:0' onkeydown="chatTyped(event)" id='userChatInput'></textarea>
     </div>
