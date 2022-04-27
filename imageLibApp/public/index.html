@@ -37,7 +37,7 @@ function chatTyped(event){
     var url = "./postChat?id=" + id + "&chatid=" + chatid + "&msg=" + msg + "&time=" + time + "&userid=" + myUserID;
     loadURL(url, function(data){
       document.getElementById("userChatInput").value = "";
-      updateChat(chatid);
+      updateChat();
     });
   }
 }

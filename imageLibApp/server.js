@@ -96,6 +96,15 @@ app.get("/getAllImages", function (req, res) {
   });
 });
 
+app.get("/getDashboardList", function (req, res) {
+  var skip = parseInt(req.query.skip || "0");
+  db.collection("account").findOne({userid:req.user.local.email}, function(e,r){
+    db.collection("images").find({userid:{$in:r.friends}}).skip(skip).limit(10).toArray(function(e1,r1){
+      res.send(JSON.stringify(r1));
+    });
+  });
+});
+
 app.get("/getAccountInfo", function (req, res) {
   db.collection("account").findOne({userid:req.user.local.email}, function(e,r){
     res.end(JSON.stringify(r));
